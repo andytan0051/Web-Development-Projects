@@ -6,23 +6,8 @@ html
         link(rel="stylesheet", type="text/css", href="/stylesheets/styles.css")
         link(href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet")
         link(href="https://fonts.googleapis.com/css2?family=Londrina+Outline&family=Source+Code+Pro&display=swap" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet")
 
-
-    body(id="welcome")
-        nav
-            ul
-                li
-                    a(href='/') Weathertop
-                li
-                    a(href='/stations') Dashboard
-        div(id='heading')
-            h1 Weathertop
-            a(id='dashboard_button' href='/stations') Dashboard
-
-
-
-
-
-
-
-
+    body
+        div(class="container")
+            div(class="alert alert-danger") Error: #{error}

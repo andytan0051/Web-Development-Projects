@@ -1,6 +1,7 @@
 const express = require("express");
 var pg = require("pg");
 const dotenv = require("dotenv");
+const {max} = require("pg/lib/defaults");
 
 /* Reading global variables from config file */
 dotenv.config();
@@ -39,27 +40,45 @@ app.get('/', (req, res) => {
     res.render("index");
 });
 
-app.get('/dashboard', (req, res) => {
-    res.render("dashboard");
-});
+app.get('/stations', (req, res) => {
+    /* List all stations */
+    dbClient.query("SELECT * FROM stations", function (dbError, dbResponse) {
+        dbClient.query("SELECT * FROM readings where station_id = 1", function (dbError, dbReadingResponse) {
+            res.render("dashboard", {
+                stations: dbResponse.rows,
+                reading: dbReadingResponse.rows[0],
 
-app.get('/1', (req, res) => {
-   dbClient.query("SELECT * FROM regensburg", function(dbError, dbResponse){
-       res.render("details", {location: 'Regensburg', readings: dbResponse.rows});
-});
-});
+            });
+        });
 
-app.get('/2', (req, res) => {
-    dbClient.query("SELECT * FROM kelheim", function(dbError, dbResponse){
-        res.render("details", {location: 'Kelheim', readings: dbResponse.rows});
+
     });
 });
 
-app.get('/3', (req, res) => {
-    dbClient.query("SELECT * FROM muenchen", function(dbError, dbResponse){
-        res.render("details", {location: 'München', readings: dbResponse.rows});
+app.get("/stations/:id", function (req, res) {
+    /* List details about a station */
+    var stationId = req.params.id;
+
+
+    dbClient.query("SELECT * FROM stations WHERE id=$1", [stationId], function (dbError, dbStationResponse) {
+        dbClient.query("SELECT * FROM readings WHERE station_id=$1", [stationId], function (dbError, dbReadingsResponse) {
+            if(dbReadingsResponse.rows.length == 0){
+                res.render("error", {
+                    error: "No data found"
+                });
+            }
+            else {
+                    res.render("details", {
+                        station: dbStationResponse.rows[0],
+                        latest_reading: dbReadingsResponse.rows[dbReadingsResponse.rows.length-1],
+                        readings: dbReadingsResponse.rows
+                    });
+            }
+        });
     });
+
 });
+
 
 app.listen(PORT, function() {
   console.log(`Weathertop running and listening on port ${PORT}`);
