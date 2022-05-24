@@ -1,0 +1,60 @@
+doctype html
+html
+    head
+        title Weathertop
+        link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css")
+        link(rel="stylesheet", type="text/css", href="/stylesheets/styles.css")
+        link(href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css2?family=Londrina+Outline&family=Source+Code+Pro&display=swap" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet")
+        script(src="./app.js")
+
+    body(id='dashboard')
+        nav
+            ul
+                li
+                    a(href='/') Weathertop
+                li
+                    a(href='/dashboard') Dashboard
+
+        h1 Dashboard
+        div(class="container")
+            div(class="row")
+                div(class="col") Regensburg
+                    p
+                div(class="col") Weather
+                    p(class='rgb_dashboard_weather')
+                div(class="col") Temperature
+                    p(class='rgb_dashboard_temp')
+                div(class="col") Wind
+                    p(class='rgb_dashboard_wind')
+                div(class="col") Air Pressure
+                    p(class='rgb_dashboard_pressure')
+            a(href='/1') Details
+
+            div(class="row")
+                div(class="col") Kelheim
+                    p
+                div(class="col") Weather
+                    p(class='klm_dashboard_weather')
+                div(class="col") Temperature
+                    p(class='klm_dashboard_temp')
+                div(class="col") Wind
+                    p(class='klm_dashboard_wind')
+                div(class="col") Air Pressure
+                    p(class='klm_dashboard_pressure')
+            a(href='/2') Details
+
+            div(class="row")
+                div(class="col") München
+                    p
+                div(class="col") Weather
+                    p(class='muc_dashboard_weather')
+                div(class="col") Temperature
+                    p(class='muc_dashboard_temp')
+                div(class="col") Wind
+                    p(class='muc_dashboard_wind')
+                div(class="col") Air Pressure
+                    p(class='muc_dashboard_pressure')
+            a(href='/3') Details
+

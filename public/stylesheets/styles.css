@@ -1,0 +1,98 @@
+/* font configurations */
+@font-face {
+    font-family: Roboto Condensed Light;
+    src: url("../fonts/RobotoCondensed-Light.ttf");
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+nav{
+    text-align: left;
+
+
+}
+
+nav ul li{
+    display: inline-block;
+    padding-left: 50px;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+
+
+#welcome {
+    font-family: 'Roboto Condensed Light';
+    background-image:  url('../images/weather.jpg');
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    margin-top: 2%;
+
+}
+
+#heading{
+    margin-top: 200px;
+}
+
+#heading h1 {
+    margin-bottom: 80px;
+    color: white;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 220px;
+    text-shadow: -1px 0 black, 0 10px black, 10px 0 black, 0 -1px black;
+
+
+}
+
+#dashboard_button {
+    font-size: 30px;
+    border-radius: 30px;
+    border: white 10px dashed;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-family: 'Source Code Pro', monospace;
+}
+
+
+#dashboard {
+    font-family: 'Varela Round', sans-serif;
+    text-align: center;
+    margin-top: 2%;
+
+}
+
+
+
+.row {
+    margin-top: 50px;
+    background-color: lightgrey;
+    border: 1px solid black;
+
+
+}
+
+.col{
+    background-color: black;
+    color: white;
+    margin: 20px 20px;
+    padding: 25px;
+}
+
+table{
+    text-align: left;
+    width: 100%;
+    margin-top: 50px;
+}
+
+table th{
+    border-bottom: 2px solid black;
+}
+
+table tr{
+    border-bottom: 1px solid lightgrey;
+}
