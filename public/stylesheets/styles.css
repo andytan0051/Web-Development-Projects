@@ -24,13 +24,12 @@ nav ul li{
 
 
 
-#welcome {
+body {
+
+    margin-left: 10%;
+    margin-right: 10%;
     font-family: 'Roboto Condensed Light';
-    background-image:  url('../images/weather.jpg');
-    background-size: auto;
-    background-repeat: no-repeat;
-    background-position: center;
-    text-align: center;
+    text-align: left;
     margin-top: 2%;
 
 }
@@ -61,7 +60,6 @@ nav ul li{
 
 #dashboard {
     font-family: 'Varela Round', sans-serif;
-    text-align: center;
     margin-top: 2%;
 
 }
@@ -69,11 +67,8 @@ nav ul li{
 
 
 .row {
-    margin-top: 50px;
-    background-color: lightgrey;
-    border: 1px solid black;
-
-
+    margin-top: 35px;
+    border: 1px solid dimgrey;
 }
 
 .col{
