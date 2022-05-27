@@ -4,8 +4,6 @@ html
         title Weathertop
         link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css")
         link(rel="stylesheet", type="text/css", href="/stylesheets/styles.css")
-        link(href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet")
-        link(href="https://fonts.googleapis.com/css2?family=Londrina+Outline&family=Source+Code+Pro&display=swap" rel="stylesheet")
         link(href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet")
 
 
@@ -13,7 +11,8 @@ html
         nav
             ul
                 li
-                    a(href='/') Weathertop
+                    a(href='/')
+                        h3 Weathertop
                 li
                     a(href='/stations') Dashboard
 
@@ -23,23 +22,29 @@ html
                 div(class="col") Weather
                     p #{latest_reading.weather}
                 div(class="col") Temperature
-                    p #{latest_reading.temperature}
+                    p #{latest_reading.temperature} Grad
                 div(class="col") Wind
-                    p #{latest_reading.wind}
+                    p #{latest_reading.wind} bft
                 div(class="col") Air Pressure
-                    p #{latest_reading.pressure}
+                    p #{latest_reading.pressure} hpa
 
 
-            table
-                tr
-                    th Weather
-                    th Temperature
-                    th Wind
-                    th Air Pressure
 
-                each reading in readings
+
+            table(class="table")
+                thead
                     tr
-                        td #{reading.weather}
-                        td #{reading.temperature}
-                        td #{reading.wind}
-                        td #{reading.pressure}
+                        th Wetter
+                        th Temperatur
+                        th Wind
+                        th Luftdruck
+                tbody
+                    each reading in readings
+                        tr
+                            td #{reading.weather}
+                            td #{reading.temperature}
+                            td #{reading.wind}
+                            td #{reading.pressure}
+
+
+

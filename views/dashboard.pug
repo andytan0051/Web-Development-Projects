@@ -4,8 +4,6 @@ html
         title Weathertop
         link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css")
         link(rel="stylesheet", type="text/css", href="/stylesheets/styles.css")
-        link(href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet")
-        link(href="https://fonts.googleapis.com/css2?family=Londrina+Outline&family=Source+Code+Pro&display=swap" rel="stylesheet")
         link(href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet")
 
 
@@ -13,23 +11,25 @@ html
         nav
             ul
                 li
-                    a(href='/') Weathertop
+                    a(href='/')
+                        h3 Weathertop
                 li
                     a(href='/stations') Dashboard
 
         h1 Dashboard
         div(class="container")
 
-            each station in stations
+            each latestreading in latestreadings
                 div(class="row")
-                    div(class="col") #{station.station}
+                    div(class="col") #{latestreading.location}
                     div(class="col") Weather
-                        p #{reading.weather}
+                        p #{latestreading.weather}
                     div(class="col") Temperature
-                        p
+                        p #{latestreading.temperature}
                     div(class="col") Wind
-                        p
+                        p #{latestreading.wind}
                     div(class="col") Air Pressure
-                        p
-                a(href="/stations/"+station.id) Details
+                        p #{latestreading.pressure}
+
+                a(href="/stations/"+latestreading.stationid) Details
 

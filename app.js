@@ -41,24 +41,53 @@ app.get('/', (req, res) => {
 });
 
 app.get('/stations', (req, res) => {
-    /* List all stations */
-    dbClient.query("SELECT * FROM stations", function (dbError, dbResponse) {
-        dbClient.query("SELECT * FROM readings where station_id = 1", function (dbError, dbReadingResponse) {
-            res.render("dashboard", {
-                stations: dbResponse.rows,
-                reading: dbReadingResponse.rows[0],
 
-            });
+    var readingsArray = [];
+
+    var index = 0;
+    var i = 0;
+
+    dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id", function (dbError, dbResponse){
+        dbClient.query("SELECT * FROM stations", function (dbError, dbStationResponse){
+        while(index < dbStationResponse.rows.length){
+            while(i < dbResponse.rows.length && dbResponse.rows[i].station_id === index+1){
+                i++;
+            }
+
+            var readings = {
+                location : undefined,
+                weather : undefined,
+                temperature : undefined,
+                wind : undefined,
+                pressure : undefined,
+                stationid : undefined
+            };
+           // console.log(i);
+           // console.log(dbResponse.rows[i-1].id);
+            //console.log(dbResponse.rows[i-1].station);
+            readings.location = dbResponse.rows[i-1].station;
+            readings.weather = dbResponse.rows[i-1].weather;
+            readings.temperature = dbResponse.rows[i-1].temperature;
+            readings.wind = dbResponse.rows[i-1].wind;
+            readings.pressure = dbResponse.rows[i-1].pressure;
+            readings.stationid = dbResponse.rows[i-1].station_id;
+            readingsArray.push(readings);
+            //console.log(readingsArray[0].temperature);
+            index++;
+        }
+       // console.log(readingsArray[2].stationid);
+
+        res.render("dashboard", {
+            latestreadings: readingsArray
         });
-
-
     });
+    });
+
 });
 
 app.get("/stations/:id", function (req, res) {
     /* List details about a station */
     var stationId = req.params.id;
-
 
     dbClient.query("SELECT * FROM stations WHERE id=$1", [stationId], function (dbError, dbStationResponse) {
         dbClient.query("SELECT * FROM readings WHERE station_id=$1", [stationId], function (dbError, dbReadingsResponse) {
@@ -71,7 +100,7 @@ app.get("/stations/:id", function (req, res) {
                     res.render("details", {
                         station: dbStationResponse.rows[0],
                         latest_reading: dbReadingsResponse.rows[dbReadingsResponse.rows.length-1],
-                        readings: dbReadingsResponse.rows
+                        readings: dbReadingsResponse.rows.reverse()
                     });
             }
         });
