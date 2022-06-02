@@ -1,7 +1,7 @@
 const express = require("express");
 var pg = require("pg");
 const dotenv = require("dotenv");
-const {max} = require("pg/lib/defaults");
+const {max, rows} = require("pg/lib/defaults");
 
 /* Reading global variables from config file */
 dotenv.config();
@@ -40,47 +40,21 @@ app.get('/', (req, res) => {
     res.render("index");
 });
 
-app.get('/stations', (req, res) => {
+app.get('/stations', async(req, res) => {
 
-    var readingsArray = [];
 
-    var index = 0;
-    var i = 0;
+    var readingArray = [];
+    let station_id_index = await dbClient.query("SELECT id FROM stations");
 
-    dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id", function (dbError, dbResponse){
-        dbClient.query("SELECT * FROM stations", function (dbError, dbStationResponse){
-        while(index < dbStationResponse.rows.length){
-            while(i < dbResponse.rows.length && dbResponse.rows[i].station_id === index+1){
-                i++;
-            }
+    for (let index = 0; index < station_id_index.rows.length; index++) {
+        console.log(station_id_index.rows[index].id);
+        let stations = await dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id WHERE station_id=$1", [station_id_index.rows[index].id]);
+        console.log(stations.rows);
+        readingArray.push(stations.rows[stations.rows.length - 1]);
+    }
 
-            var readings = {
-                location : undefined,
-                weather : undefined,
-                temperature : undefined,
-                wind : undefined,
-                pressure : undefined,
-                stationid : undefined
-            };
-           // console.log(i);
-           // console.log(dbResponse.rows[i-1].id);
-            //console.log(dbResponse.rows[i-1].station);
-            readings.location = dbResponse.rows[i-1].station;
-            readings.weather = dbResponse.rows[i-1].weather;
-            readings.temperature = dbResponse.rows[i-1].temperature;
-            readings.wind = dbResponse.rows[i-1].wind;
-            readings.pressure = dbResponse.rows[i-1].pressure;
-            readings.stationid = dbResponse.rows[i-1].station_id;
-            readingsArray.push(readings);
-            //console.log(readingsArray[0].temperature);
-            index++;
-        }
-       // console.log(readingsArray[2].stationid);
-
-        res.render("dashboard", {
-            latestreadings: readingsArray
-        });
-    });
+    res.render("dashboard", {
+        latestreadings: readingArray
     });
 
 });
@@ -97,11 +71,11 @@ app.get("/stations/:id", function (req, res) {
                 });
             }
             else {
-                    res.render("details", {
-                        station: dbStationResponse.rows[0],
-                        latest_reading: dbReadingsResponse.rows[dbReadingsResponse.rows.length-1],
-                        readings: dbReadingsResponse.rows.reverse()
-                    });
+                res.render("details", {
+                    station: dbStationResponse.rows[0],
+                    latest_reading: dbReadingsResponse.rows[dbReadingsResponse.rows.length-1],
+                    readings: dbReadingsResponse.rows.reverse()
+                });
             }
         });
     });
@@ -110,5 +84,5 @@ app.get("/stations/:id", function (req, res) {
 
 
 app.listen(PORT, function() {
-  console.log(`Weathertop running and listening on port ${PORT}`);
+    console.log(`Weathertop running and listening on port ${PORT}`);
 });

@@ -54,3 +54,20 @@ body {
     padding: 25px;
 }
 
+form .row{
+    border: none;
+
+}
+form .col{
+    border: none;
+    background-color: white;
+    color: black;
+    height: 5%;
+    margin: 0px;
+    padding: 0px;
+}
+
+input{
+    display: block;
+}
+
