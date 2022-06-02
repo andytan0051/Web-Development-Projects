@@ -47,7 +47,6 @@ app.get('/stations', async(req, res) => {
     let station_id_index = await dbClient.query("SELECT id FROM stations");
 
     for (let index = 0; index < station_id_index.rows.length; index++) {
-        console.log(station_id_index.rows[index].id);
         let stations = await dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id WHERE station_id=$1", [station_id_index.rows[index].id]);
         readingArray.push(stations.rows[stations.rows.length - 1]);
     }
