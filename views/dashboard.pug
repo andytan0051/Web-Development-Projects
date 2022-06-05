@@ -2,19 +2,45 @@ extends layout.pug
 
 block content
     h1 Dashboard
-    div(class="container")
-
+    div
         each latestreading in latestreadings
-            div(class="row")
-                div(class="col") #{latestreading.station}
-                div(class="col") Weather
-                    p #{latestreading.weather}
-                div(class="col") Temperature
-                    p #{latestreading.temperature} Grad
-                div(class="col") Wind
-                    p #{latestreading.wind} bft
-                div(class="col") Air Pressure
-                    p #{latestreading.pressure} hPa
+            div(class="container" id='dashboard_container')
+                div(class="row")
+                    div(class="col") #{latestreading.station}
+                        div(id="lat_lon")
+                            p Lat: #{latestreading.latitude}
+                            p Lon: #{latestreading.longitude}
+                    div(class="col") Weather
+                        p #{latestreading.weather}
+                    div(class="col") Temperature
+                        p #{latestreading.temperature} Grad
+                    div(class="col") Wind
+                        p #{latestreading.wind} bft
+                    div(class="col") Air Pressure
+                        p #{latestreading.pressure} hPa
+                div(class="row" id='detailsdeleterow')
+                    a(href="/stations/"+latestreading.station_id) Details
+                    span
+                        form(display="inline"  action="/stations" method="POST")
+                            input(type="hidden" name="stationid" value=latestreading.station_id)
+                            button(class="bi bi-x-circle" aria-hidden="true" width="32" height="32")
 
-            a(href="/stations/"+latestreading.stationid) Details
 
+
+    form(action="/stations", method="post")
+        div(class='container')
+            div(class='row')
+                div(class='col')
+                    div(class="form-group")
+                        label(for="station_name") Name Wetterstation
+                        input(type="text", name="station_name", id="station_name")
+                div(class='col')
+                    div(class="form-group")
+                        label(for="xposition") Breitengrad
+                        input(type="text", name="xposition", id="xposition")
+                div(class='col')
+                    div(class="form-group")
+                        label(for="yposition") Längengrad
+                        input(type="text", name="yposition", id="yposition")
+            div(class="form-group")
+                button(class="btn btn-primary", type="submit") Station hinzufügen

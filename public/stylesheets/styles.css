@@ -42,10 +42,7 @@ body {
 
 }
 
-.row {
-    margin-top: 35px;
-    border: 1px solid dimgrey;
-}
+
 
 .col{
     background-color: black;
@@ -69,5 +66,26 @@ form .col{
 
 input{
     display: block;
+}
+
+#lat_lon {
+    margin-top: 10px;
+}
+
+#lat_lon p{
+    margin-bottom: 0px;
+}
+
+#detailsdeleterow{
+    margin-top: 0px;
+}
+
+#latestreadingrow{
+    border: 1px dimgrey solid;
+}
+
+#dashboard_container{
+    border: dimgrey solid 1px;
+    margin-bottom: 5px;
 }
 
