@@ -53,6 +53,9 @@ app.get('/stations', async(req, res) => {
         readingArray.push(stations.rows[stations.rows.length - 1]);
     }
 
+    //let max_value = await dbClient.query("SELECT MAX(temperature) FROM readings");
+    //console.log(max_value.rows[0].max); To find max value
+
     res.render("dashboard", {
         latestreadings: readingArray
     });
@@ -84,7 +87,7 @@ app.post("/stations", urlencoded({ extended: false }), function(req,res){
 
     res.redirect("/stations");
 
-})
+});
 
 app.get("/stations/:id", function (req, res) {
 
@@ -140,6 +143,39 @@ app.post("/stations/:id", urlencoded({ extended: false }), async function(req,re
     res.redirect("/stations/"+stationId);
 
 });
+
+app.get("/register", function (req, res) {
+
+    res.render("register");
+
+});
+
+
+app.post("/register", urlencoded({ extended: false }), function(req,res){
+    var email = req.body.email;
+    var firstname = req.body.firstname;
+    var lastname = req.body.lastname;
+    var password = req.body.password;
+
+    dbClient.query("INSERT into users (email, firstname, lastname, password) VALUES ($1, $2, $3, $4)", [email, firstname, lastname, password]);
+
+    res.render("index");
+});
+
+app.post("/", urlencoded({ extended: false }), function(req,res){
+    var email = req.body.email;
+    var password = req.body.password;
+
+    dbClient.query("SELECT * FROM users WHERE email=$1 AND password=$2", [email, password], function (dbError, dbResponse) {
+        if (dbResponse.rows.length === 0) {
+            res.render("index", {login_error: true});
+        } else {
+            res.redirect("stations");
+        }
+    });
+0
+});
+
 
 
 app.listen(PORT, function() {

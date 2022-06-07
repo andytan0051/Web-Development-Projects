@@ -1,7 +1,33 @@
 extends layout.pug
 
 block content
-    img(src='../images/weathericons.jpg')
+    body
+        nav(class="bg-light text-dark")
+            ul
+                li
+                    a(href='/')
+                        h3 Weathertop
+                li
+                    a(href='/register') Registrieren
+        div(class='container')
+            div(class='row')
+                div(class='col' class='mainpagecontent')
+                  img(src='../images/weathericons.jpg')
+                div(class='col' class='mainpagecontent')
+                    form(action="/" method="post")
+                        div(class="form-group")
+                            label(for="inputEmail") Email
+                            input(type="text", class="form-control", id="inputEmail", placeholder="Email eingeben", name="email")
+                        div(class="form-group")
+                            label(for="inputPassword") Password
+                            input(class="form-control", id="inputPassword" placeholder="Password eingeben", name="password")
+
+                        button(type="submit", class="btn btn-primary") Einloggen
+                        if(login_error != undefined)
+                            div(class="alert alert-danger" id='loginwarning' role="alert") Sorry, username and password do not match!
+
+
+
 
 
 

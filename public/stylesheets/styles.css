@@ -11,8 +11,8 @@
 
 nav{
     text-align: left;
-    background-color: lightgrey;
-
+    padding-top: 10px;
+    padding-bottom: 3px;
 }
 
 nav ul li{
@@ -39,16 +39,19 @@ body {
     font-family: 'Varela Round', sans-serif;
     text-align: left;
     margin-top: 2%;
-
 }
-
-
 
 .col{
     background-color: black;
     color: white;
     margin: 20px 20px;
     padding: 25px;
+}
+
+.mainpagecontent{
+    background-color: white;
+    color: black;
+
 }
 
 form .row{
@@ -89,3 +92,6 @@ input{
     margin-bottom: 5px;
 }
 
+#loginwarning{
+    margin-top: 10px;
+}

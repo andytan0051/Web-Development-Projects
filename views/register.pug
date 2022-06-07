@@ -1,0 +1,26 @@
+extends layout.pug
+
+block content
+    body
+        nav(class="bg-light text-dark")
+            ul
+                li
+                    a(href='/')
+                        h3 Weathertop
+                li
+                    a(href='/register') Registrieren
+        form(action="register" method="post")
+            div(class="form-group")
+                label(for="registerEmail") Email
+                input(type="text", class="form-control", id="registerEmail", placeholder="Email", name="email")
+            div(class="form-group")
+                label(for="registerFirstName") Vorname
+                input(class="form-control", id="registerFirstName" placeholder="Vorname", name="firstname")
+            div(class="form-group")
+                label(for="registerLastName") Nachname
+                input(type="text", class="form-control", id="registerLastName", placeholder="Nachname", name='lastname')
+            div(class="form-group")
+                label(for="registerPassword") Password
+                input(class="form-control", id="registerPassword" placeholder="Password", name="password")
+            div(class="form-group")
+                button(type="submit", class="btn btn-primary") Registrieren

@@ -1,68 +1,76 @@
 extends layout.pug
 
 block content
-    div(class="container")
-        div(class="row" id='latestreadingrow')
-            div(class="col") #{station.station}
-            div(class="col") Weather
-                p #{latest_reading.weather}
-            div(class="col") Temperature
-                p #{latest_reading.temperature} Grad
-            div(class="col") Wind
-                p #{latest_reading.wind} bft
-            div(class="col") Air Pressure
-                p #{latest_reading.pressure} hpa
+    body
+        nav(class="bg-light text-dark")
+            ul
+                li
+                    a(href='/')
+                        h3 Weathertop
+                li
+                    a(href='/stations') Dashboard
+        div(class="container")
+            div(class="row" id='latestreadingrow')
+                div(class="col") #{station.station}
+                div(class="col") Weather
+                    p #{latest_reading.weather}
+                div(class="col") Temperature
+                    p #{latest_reading.temperature} Grad
+                div(class="col") Wind
+                    p #{latest_reading.wind} bft
+                div(class="col") Air Pressure
+                    p #{latest_reading.pressure} hpa
 
 
 
 
-        table(class="table")
-            thead
-                tr
-                    th Zeitpunkt
-                    th Wetter
-                    th Temperatur
-                    th Wind
-                    th Luftdruck
-            tbody
-                each reading in readings
-                   if(reading.weather != null && reading.temperature != null && reading.wind != null && reading.pressure != null)
-                        tr
-                            td #{reading.time}
-                            td #{reading.weather}
-                            td #{reading.temperature}
-                            td #{reading.wind}
-                            td #{reading.pressure}
-                            td
-                                form(display="inline"  action="/stations/"+reading.station_id method="POST")
-                                    input(type="hidden" name="readingid" value=reading.id)
-                                    button(class="btn btn-danger")
+            table(class="table")
+                thead
+                    tr
+                        th Zeitpunkt
+                        th Wetter
+                        th Temperatur
+                        th Wind
+                        th Luftdruck
+                tbody
+                    each reading in readings
+                       if(reading.weather != null && reading.temperature != null && reading.wind != null && reading.pressure != null)
+                            tr
+                                td #{reading.time}
+                                td #{reading.weather}
+                                td #{reading.temperature}
+                                td #{reading.wind}
+                                td #{reading.pressure}
+                                td
+                                    form(display="inline"  action="/stations/"+reading.station_id method="POST")
+                                        input(type="hidden" name="readingid" value=reading.id)
+                                        button(class="btn btn-danger")
 
-        form(action="/stations/"+latest_reading.station_id, method="post")
-            div(class='container')
-                div(class='row')
-                    div(class='col')
-                        div(class="form-group")
-                            label(for="weather_code") Code
-                            input(type="text", name="weather_code", id="weather_code")
-                    div(class='col')
-                        div(class="form-group")
-                            label(for="temperature") Temperatur
-                            input(type="text", name="temperature", id="temperature")
-                    div(class='col')
-                        div(class="form-group")
-                            label(for="wind_speed") Windgeschwindigkeit
-                            input(type="text", name="wind_speed", id="wind_speed")
-                    div(class='col')
-                        div(class="form-group")
-                            label(for="wind_direction") Windrichtung
-                            input(type="text", name="wind_direction", id="wind_direction")
-                    div(class='col')
-                        div(class="form-group")
-                            label(for="airpressure") Luftdruck
-                            input(type="text", name="airpressure", id="airpressure")
-                div(class="form-group")
-                    button(class="btn btn-primary", type="submit") Messung hinzufügen
+            form(action="/stations/"+latest_reading.station_id, method="post")
+                div(class='container')
+                    div(class='row')
+                        div(class='col')
+                            div(class="form-group")
+                                label(for="weather_code") Code
+                                input(type="text", name="weather_code", id="weather_code")
+                        div(class='col')
+                            div(class="form-group")
+                                label(for="temperature") Temperatur
+                                input(type="text", name="temperature", id="temperature")
+                        div(class='col')
+                            div(class="form-group")
+                                label(for="wind_speed") Windgeschwindigkeit
+                                input(type="text", name="wind_speed", id="wind_speed")
+                        div(class='col')
+                            div(class="form-group")
+                                label(for="wind_direction") Windrichtung
+                                input(type="text", name="wind_direction", id="wind_direction")
+                        div(class='col')
+                            div(class="form-group")
+                                label(for="airpressure") Luftdruck
+                                input(type="text", name="airpressure", id="airpressure")
+                    div(class="form-group")
+                        button(class="btn btn-primary", type="submit") Messung hinzufügen
 
 
 
