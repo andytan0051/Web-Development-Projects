@@ -5,11 +5,10 @@ block content
         nav(class="bg-light text-dark")
             ul
                 li
-                    a(href='/')
-                        h3 Weathertop
+                    h3 Weathertop
                 li
                     button(type="button" class="btn btn-secondary")
-                        a(href='/') Logout
+                        a(href='/logout') Logout
         h1 Dashboard
         div
             each latestreading in latestreadings
@@ -23,6 +22,8 @@ block content
                             p #{latestreading.weather}
                         div(class="col") Temperature
                             p #{latestreading.temperature} Grad
+                            p Max: #{latestreading.max_temp}
+                            p Min: #{latestreading.min_temp}
                         div(class="col") Wind
                             p #{latestreading.wind} bft
                         div(class="col") Air Pressure
