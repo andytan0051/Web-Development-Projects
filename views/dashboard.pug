@@ -18,24 +18,133 @@ block content
                             div(id="lat_lon")
                                 p Lat: #{latestreading.latitude}
                                 p Lon: #{latestreading.longitude}
-                        div(class="col") Weather
-                            p #{latestreading.weather}
-                        div(class="col") Temperature
-                            p #{latestreading.temperature} Grad
-                            p Max: #{latestreading.max_temp}
-                            p Min: #{latestreading.min_temp}
-                        div(class="col") Wind
-                            p #{latestreading.wind} bft
-                        div(class="col") Air Pressure
-                            p #{latestreading.pressure} hPa
+                        div(class="col")
+                            if(latestreading.weather >= 200  && latestreading.weather<=232)
+                                div(class='row')
+                                    div(class='col-8') Weather
+                                        p Thunderstorm
+                                    div(class='col-4')
+                                        i(class="bi bi-cloud-lightning-rain" style="font-size: 2rem")
+                            else if (latestreading.weather >= 300 && latestreading.weather <= 321)
+                                div(class='row')
+                                    div(class='col-8') Weather
+                                        p Drizzle
+                                    div(class='col-4')
+                                        i(class="bi bi-cloud-drizzle" style="font-size: 2rem")
+                            else if (latestreading.weather >= 500  && latestreading.weather<=531)
+                                div(class='row')
+                                    div(class='col-8') Weather
+                                        p Rain
+                                    div(class='col-4')
+                                        i(class="bi bi-cloud-rain-heavy" style="font-size: 2rem")
+                            else if (latestreading.weather >= 600 && latestreading.weather <= 622)
+                                div(class='row')
+                                    div(class='col-8') Weather
+                                        p Snow
+                                    div(class='col-4')
+                                        i(class="bi bi-cloud-snow" style="font-size: 2rem")
+                            else if (latestreading.weather >= 701 && latestreading.weather <= 781)
+                                div(class='row')
+                                    div(class='col-8') Weather
+                                        p Atmosphere
+                                    div(class='col-4')
+                                        i(class="bi bi-cloud-haze" style="font-size: 2rem")
+                            else if (latestreading.weather == 800)
+                                div(class='row')
+                                    div(class='col-8') Weather
+                                        p Clear
+                                    div(class='col-4')
+                                        i(class="bi bi-sun" style="font-size: 2rem")
+                            else if (latestreading.weather >= 801 && latestreading.weather <= 804)
+                                div(class='row')
+                                    div(class='col-8') Weather
+                                        p Cloud
+                                    div(class='col-4')
+                                        i(class="bi bi-cloudy" style="font-size: 2rem")
+                            else
+                                p Weather
+
+                        div(class="col")
+                            div(class='row')
+                                div(class='col-8') Temperature
+                                    p #{latestreading.temperature} Grad
+                                    p Max: #{latestreading.max_temp}
+                                    p Min: #{latestreading.min_temp}
+                                div(class='col-4')
+                                    i(class="bi bi-thermometer-half" style="font-size: 2rem; color: grey;")
+                                    if(latestreading.temp_increase == true)
+                                        i.bi.bi-arrow-up-right(style="font-size: 2rem; color: grey;")
+                                    else if(latestreading.temp_increase == false)
+                                        i.bi.bi-arrow-down-right(style="font-size: 2rem; color: grey;")
+                        div(class="col")
+                            div(class='row')
+                                div(class='col-8') Wind
+                                    p #{latestreading.wind} bft
+                                    if(latestreading.direction >= 0.0 && latestreading.direction <= 360.0)
+                                        if(latestreading.direction > 348.75 || latestreading.direction <= 11.25)
+                                            p Nord
+                                        else if(latestreading.direction > 11.25 && latestreading.direction <= 33.75)
+                                            p Nord Nord Ost
+                                        else if(latestreading.direction > 33.75 && latestreading.direction <= 56.25)
+                                            p Nord Ost
+                                        else if(latestreading.direction > 56.25 && latestreading.direction <= 78.75)
+                                            p Ost Nord Ost
+                                        else if(latestreading.direction > 78.75 && latestreading.direction <= 101.25)
+                                            p Ost
+                                        else if(latestreading.direction > 101.25 && latestreading.direction <= 123.75)
+                                            p Ost Süd Ost
+                                        else if(latestreading.direction > 123.75 && latestreading.direction <= 146.25)
+                                            p Süd Ost
+                                        else if(latestreading.direction > 146.25 && latestreading.direction <= 168.75)
+                                            p Süd Süd Ost
+                                        else if(latestreading.direction > 168.75 && latestreading.direction <= 191.25)
+                                            p Süd
+                                        else if(latestreading.direction > 191.25 && latestreading.direction <= 213.75)
+                                            p Süd Süd West
+                                        else if(latestreading.direction > 213.75 && latestreading.direction <= 236.25)
+                                            p Süd West
+                                        else if(latestreading.direction > 236.25 && latestreading.direction <= 258.75)
+                                            p West Süd West
+                                        else if(latestreading.direction > 258.75 && latestreading.direction <= 281.25)
+                                            p West
+                                        else if(latestreading.direction > 281.25 && latestreading.direction <= 303.75)
+                                            p West Nord West
+                                        else if(latestreading.direction > 303.75 && latestreading.direction <= 326.25)
+                                            p Nord West
+                                        else if(latestreading.direction > 326.25 && latestreading.direction <= 348.75)
+                                            p Nord Nord West
+                                    p Max: #{latestreading.max_wind}
+                                    p Min: #{latestreading.min_wind}
+                                div(class='col-4')
+                                    i(class="bi bi-wind" style="font-size: 2rem; color: orange;")
+                                    if(latestreading.wind_increase == true)
+                                        i.bi.bi-arrow-up-right(style="font-size: 2rem; color: orange;")
+                                    else if(latestreading.wind_increase == false)
+                                        i.bi.bi-arrow-down-right(style="font-size: 2rem; color: orange;")
+                        div(class="col")
+                            div(class='row')
+                                div(class='col-8') Air Pressure
+                                    p #{latestreading.pressure} hPa
+                                    p Max: #{latestreading.max_pressure}
+                                    p Min: #{latestreading.min_pressure}
+                                div(class='col-4')
+                                    i(class="bi bi-speedometer" style="font-size: 2rem; color: yellow;")
+                                    if(latestreading.pressure_increase == true)
+                                        i.bi.bi-arrow-up-right(style="font-size: 2rem; color: yellow;")
+                                    else if(latestreading.pressure_increase == false)
+                                        i.bi.bi-arrow-down-right(style="font-size: 2rem; color: yellow;")
+
+
+
                     div(class="row" id='detailsdeleterow')
-                        a(href="/stations/"+latestreading.station_id) Details
+                        a(href="/stations/"+latestreading.station_id)
+                            button.btn.btn-link(type='button')
+                                i.bi.bi-folder
                         span
                             form(display="inline"  action="/stations" method="POST")
                                 input(type="hidden" name="stationid" value=latestreading.station_id)
-                                button(aria-label="Delete")
-                                    i(class="bi bi-x-circle" aria-hidden="true")
-
+                                button(class="btn btn-link")
+                                    i.bi.bi-trash
 
 
         form(action="/stations", method="post")
@@ -48,10 +157,10 @@ block content
                     div(class='col')
                         div(class="form-group")
                             label(for="xposition") Breitengrad
-                            input(type="text", name="xposition", id="xposition")
+                            input(type="text", inputmode="numeric", name="xposition", id="xposition")
                     div(class='col')
                         div(class="form-group")
                             label(for="yposition") Längengrad
-                            input(type="text", name="yposition", id="yposition")
+                            input(type="text", inputmode="numeric", name="yposition", id="yposition")
                 div(class="form-group")
                     button(class="btn btn-primary", type="submit") Station hinzufügen

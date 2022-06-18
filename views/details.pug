@@ -10,15 +10,126 @@ block content
                     a(href='/stations') Dashboard
         div(class="container")
             div(class="row" id='latestreadingrow')
-                div(class="col") #{station.station}
-                div(class="col") Weather
-                    p #{latest_reading.weather}
-                div(class="col") Temperature
-                    p #{latest_reading.temperature} Grad
-                div(class="col") Wind
-                    p #{latest_reading.wind} bft
-                div(class="col") Air Pressure
-                    p #{latest_reading.pressure} hpa
+                div(class="col") #{latest_reading.station}
+                    div(id="lat_lon")
+                        p Lat: #{latest_reading.latitude}
+                        p Lon: #{latest_reading.longitude}
+                div(class="col")
+                    if(latest_reading.weather >= 200 && latest_reading.weather <= 232)
+                        div(class='row')
+                            div(class='col-8') Weather
+                                p Thunderstorm
+                            div(class='col-4')
+                                i(class="bi bi-cloud-lightning-rain" style="font-size: 2rem")
+                    else if (latest_reading.weather >= 300 && latest_reading.weather <= 321)
+                        div(class='row')
+                            div(class='col-8') Weather
+                                p Drizzle
+                            div(class='col-4')
+                                i(class="bi bi-cloud-drizzle" style="font-size: 2rem")
+                    else if (latest_reading.weather >= 500 && latest_reading.weather <= 531)
+                        div(class='row')
+                            div(class='col-8') Weather
+                                p Rain
+                            div(class='col-4')
+                                i(class="bi bi-cloud-rain-heavy" style="font-size: 2rem")
+                    else if (latest_reading.weather >= 600 && latest_reading.weather <= 622)
+                        div(class='row')
+                            div(class='col-8') Weather
+                                p Snow
+                            div(class='col-4')
+                                i(class="bi bi-cloud-snow" style="font-size: 2rem")
+                    else if (latest_reading.weather >= 701 && latest_reading.weather <= 781)
+                        div(class='row')
+                            div(class='col-8') Weather
+                                p Atmosphere
+                            div(class='col-4')
+                                i(class="bi bi-cloud-haze" style="font-size: 2rem")
+                    else if (latest_reading.weather == 800)
+                        div(class='row')
+                            div(class='col-8') Weather
+                                p Clear
+                            div(class='col-4')
+                                i(class="bi bi-sun" style="font-size: 2rem")
+                    else if (latest_reading.weather >= 801 && latest_reading.weather <= 804)
+                        div(class='row')
+                            div(class='col-8') Weather
+                                p Cloud
+                            div(class='col-4')
+                                i(class="bi bi-cloudy" style="font-size: 2rem")
+                    else
+                        p Weather
+
+
+                div(class="col")
+                    div(class='row')
+                        div(class='col-8') Temperature
+                            p #{latest_reading.temperature} Grad
+                            p Max: #{latest_reading.max_temp}
+                            p Min: #{latest_reading.min_temp}
+                        div(class='col-4')
+                            i(class="bi bi-thermometer-half" style="font-size: 2rem; color: grey;")
+                            if(latest_reading.temp_increase == true)
+                                i.bi.bi-arrow-up-right(style="font-size: 2rem; color: grey;")
+                            else if(latest_reading.temp_increase == false)
+                                i.bi.bi-arrow-down-right(style="font-size: 2rem; color: grey;")
+                div(class="col")
+                    div(class='row')
+                        div(class='col-8') Wind
+                            p #{latest_reading.wind} bft
+                            if(latest_reading.direction >= 0.0 && latest_reading.direction <= 360.0)
+                                if(latest_reading.direction > 348.75 || latest_reading.direction <= 11.25)
+                                    p Nord
+                                else if(latest_reading.direction > 11.25 && latest_reading.direction <= 33.75)
+                                    p Nord Nord Ost
+                                else if(latest_reading.direction > 33.75 && latest_reading.direction <= 56.25)
+                                    p Nord Ost
+                                else if(latest_reading.direction > 56.25 && latest_reading.direction <= 78.75)
+                                    p Ost Nord Ost
+                                else if(latest_reading.direction > 78.75 && latest_reading.direction <= 101.25)
+                                    p Ost
+                                else if(latest_reading.direction > 101.25 && latest_reading.direction <= 123.75)
+                                    p Ost Süd Ost
+                                else if(latest_reading.direction > 123.75 && latest_reading.direction <= 146.25)
+                                    p Süd Ost
+                                else if(latest_reading.direction > 146.25 && latest_reading.direction <= 168.75)
+                                    p Süd Süd Ost
+                                else if(latest_reading.direction > 168.75 && latest_reading.direction <= 191.25)
+                                    p Süd
+                                else if(latest_reading.direction > 191.25 && latest_reading.direction <= 213.75)
+                                    p Süd Süd West
+                                else if(latest_reading.direction > 213.75 && latest_reading.direction <= 236.25)
+                                    p Süd West
+                                else if(latest_reading.direction > 236.25 && latest_reading.direction <= 258.75)
+                                    p West Süd West
+                                else if(latest_reading.direction > 258.75 && latest_reading.direction <= 281.25)
+                                    p West
+                                else if(latest_reading.direction > 281.25 && latest_reading.direction <= 303.75)
+                                    p West Nord West
+                                else if(latest_reading.direction > 303.75 && latest_reading.direction <= 326.25)
+                                    p Nord West
+                                else if(latest_reading.direction > 326.25 && latest_reading.direction <= 348.75)
+                                    p Nord Nord West
+                            p Max: #{latest_reading.max_wind}
+                            p Min: #{latest_reading.min_wind}
+                        div(class='col-4')
+                            i(class="bi bi-wind" style="font-size: 2rem; color: orange;")
+                            if(latest_reading.wind_increase == true)
+                                i.bi.bi-arrow-up-right(style="font-size: 2rem; color: orange;")
+                            else if(latest_reading.wind_increase == false)
+                                i.bi.bi-arrow-down-right(style="font-size: 2rem; color: orange;")
+                div(class="col")
+                    div(class='row')
+                        div(class='col-8') Air Pressure
+                            p #{latest_reading.pressure} hPa
+                            p Max: #{latest_reading.max_pressure}
+                            p Min: #{latest_reading.min_pressure}
+                        div(class='col-4')
+                            i(class="bi bi-speedometer" style="font-size: 2rem; color: yellow;")
+                            if(latest_reading.pressure_increase == true)
+                                i.bi.bi-arrow-up-right(style="font-size: 2rem; color: yellow;")
+                            else if(latest_reading.pressure_increase == false)
+                                i.bi.bi-arrow-down-right(style="font-size: 2rem; color: yellow;")
 
 
 
@@ -43,7 +154,8 @@ block content
                                 td
                                     form(display="inline"  action="/stations/"+reading.station_id method="POST")
                                         input(type="hidden" name="readingid" value=reading.id)
-                                        button(class="btn btn-danger")
+                                        button(class="btn btn-link")
+                                            i.bi.bi-x-circle(style="color: black;")
 
             form(action="/stations/"+latest_reading.station_id, method="post")
                 div(class='container')

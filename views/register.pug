@@ -11,7 +11,7 @@ block content
         form(action="register" method="post")
             div(class="form-group")
                 label(for="registerEmail") Email
-                input(type="text", class="form-control", id="registerEmail", placeholder="Email", name="email")
+                input(type="email", class="form-control", id="registerEmail", placeholder="Email", name="email")
             div(class="form-group")
                 label(for="registerFirstName") Vorname
                 input(class="form-control", id="registerFirstName" placeholder="Vorname", name="firstname")
@@ -20,6 +20,8 @@ block content
                 input(type="text", class="form-control", id="registerLastName", placeholder="Nachname", name='lastname')
             div(class="form-group")
                 label(for="registerPassword") Password
-                input(class="form-control", id="registerPassword" placeholder="Password", name="password")
+                input(type='password', class="form-control", id="registerPassword" placeholder="Password", name="password")
             div(class="form-group")
                 button(type="submit", class="btn btn-primary") Registrieren
+                if(register_error != undefined)
+                    div(class="alert alert-danger" id='registerwarning' role="alert") The email address is already used!
