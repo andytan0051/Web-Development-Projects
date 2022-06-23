@@ -93,3 +93,9 @@ input{
 #loginwarning{
     margin-top: 10px;
 }
+
+#map{
+    height: 300px;
+    margin-bottom: 30px;
+}
+

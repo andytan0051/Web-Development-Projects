@@ -77,39 +77,7 @@ block content
                     div(class='row')
                         div(class='col-8') Wind
                             p #{latest_reading.wind} bft
-                            if(latest_reading.direction >= 0.0 && latest_reading.direction <= 360.0)
-                                if(latest_reading.direction > 348.75 || latest_reading.direction <= 11.25)
-                                    p Nord
-                                else if(latest_reading.direction > 11.25 && latest_reading.direction <= 33.75)
-                                    p Nord Nord Ost
-                                else if(latest_reading.direction > 33.75 && latest_reading.direction <= 56.25)
-                                    p Nord Ost
-                                else if(latest_reading.direction > 56.25 && latest_reading.direction <= 78.75)
-                                    p Ost Nord Ost
-                                else if(latest_reading.direction > 78.75 && latest_reading.direction <= 101.25)
-                                    p Ost
-                                else if(latest_reading.direction > 101.25 && latest_reading.direction <= 123.75)
-                                    p Ost Süd Ost
-                                else if(latest_reading.direction > 123.75 && latest_reading.direction <= 146.25)
-                                    p Süd Ost
-                                else if(latest_reading.direction > 146.25 && latest_reading.direction <= 168.75)
-                                    p Süd Süd Ost
-                                else if(latest_reading.direction > 168.75 && latest_reading.direction <= 191.25)
-                                    p Süd
-                                else if(latest_reading.direction > 191.25 && latest_reading.direction <= 213.75)
-                                    p Süd Süd West
-                                else if(latest_reading.direction > 213.75 && latest_reading.direction <= 236.25)
-                                    p Süd West
-                                else if(latest_reading.direction > 236.25 && latest_reading.direction <= 258.75)
-                                    p West Süd West
-                                else if(latest_reading.direction > 258.75 && latest_reading.direction <= 281.25)
-                                    p West
-                                else if(latest_reading.direction > 281.25 && latest_reading.direction <= 303.75)
-                                    p West Nord West
-                                else if(latest_reading.direction > 303.75 && latest_reading.direction <= 326.25)
-                                    p Nord West
-                                else if(latest_reading.direction > 326.25 && latest_reading.direction <= 348.75)
-                                    p Nord Nord West
+                            p #{latest_reading.direction}
                             p Max: #{latest_reading.max_wind}
                             p Min: #{latest_reading.min_wind}
                         div(class='col-4')
@@ -182,6 +150,7 @@ block content
                                 input(type="text", name="airpressure", id="airpressure")
                     div(class="form-group")
                         button(class="btn btn-primary", type="submit") Messung hinzufügen
-
+            a(href='/stations/'+latest_reading.station_id+'/addreport')
+                button(class="btn btn-warning" class="mb-4") Automatische Messung hinzufügen
 
 

@@ -80,39 +80,7 @@ block content
                             div(class='row')
                                 div(class='col-8') Wind
                                     p #{latestreading.wind} bft
-                                    if(latestreading.direction >= 0.0 && latestreading.direction <= 360.0)
-                                        if(latestreading.direction > 348.75 || latestreading.direction <= 11.25)
-                                            p Nord
-                                        else if(latestreading.direction > 11.25 && latestreading.direction <= 33.75)
-                                            p Nord Nord Ost
-                                        else if(latestreading.direction > 33.75 && latestreading.direction <= 56.25)
-                                            p Nord Ost
-                                        else if(latestreading.direction > 56.25 && latestreading.direction <= 78.75)
-                                            p Ost Nord Ost
-                                        else if(latestreading.direction > 78.75 && latestreading.direction <= 101.25)
-                                            p Ost
-                                        else if(latestreading.direction > 101.25 && latestreading.direction <= 123.75)
-                                            p Ost Süd Ost
-                                        else if(latestreading.direction > 123.75 && latestreading.direction <= 146.25)
-                                            p Süd Ost
-                                        else if(latestreading.direction > 146.25 && latestreading.direction <= 168.75)
-                                            p Süd Süd Ost
-                                        else if(latestreading.direction > 168.75 && latestreading.direction <= 191.25)
-                                            p Süd
-                                        else if(latestreading.direction > 191.25 && latestreading.direction <= 213.75)
-                                            p Süd Süd West
-                                        else if(latestreading.direction > 213.75 && latestreading.direction <= 236.25)
-                                            p Süd West
-                                        else if(latestreading.direction > 236.25 && latestreading.direction <= 258.75)
-                                            p West Süd West
-                                        else if(latestreading.direction > 258.75 && latestreading.direction <= 281.25)
-                                            p West
-                                        else if(latestreading.direction > 281.25 && latestreading.direction <= 303.75)
-                                            p West Nord West
-                                        else if(latestreading.direction > 303.75 && latestreading.direction <= 326.25)
-                                            p Nord West
-                                        else if(latestreading.direction > 326.25 && latestreading.direction <= 348.75)
-                                            p Nord Nord West
+                                    p #{latestreading.direction}
                                     p Max: #{latestreading.max_wind}
                                     p Min: #{latestreading.min_wind}
                                 div(class='col-4')
@@ -164,3 +132,17 @@ block content
                             input(type="text", inputmode="numeric", name="yposition", id="yposition")
                 div(class="form-group")
                     button(class="btn btn-primary", type="submit") Station hinzufügen
+
+        div(id='map')
+        script.
+            var map = L.map('map').setView([51.1657, 10.4515], 5);
+            var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+           !{markerScript}
+
+
+
+

@@ -2,8 +2,8 @@ const express = require("express");
 var pg = require("pg");
 const dotenv = require("dotenv");
 var session = require("express-session");
-const {max} = require("pg/lib/defaults");
 const {urlencoded} = require("express");
+const axios = require("axios");
 
 /* Reading global variables from config file */
 dotenv.config();
@@ -46,7 +46,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-
 app.get('/', (req, res) => {
     res.render("index");
 });
@@ -74,16 +73,20 @@ app.get('/stations', async(req, res) => {
     }
 
     req.session.readingArray = [];
-
+    var markerScript = "";
     let station_id_index = await dbClient.query("SELECT id FROM stations where user_id = $1", [req.session.user_id]);
 
     for (let index = 0; index < station_id_index.rows.length; index++) {
         let stations = await dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id WHERE station_id=$1", [station_id_index.rows[index].id]);
+        stations.rows[stations.rows.length - 1].direction = getTextfromDegrees(stations.rows[stations.rows.length - 1].direction);
         req.session.readingArray.push(stations.rows[stations.rows.length - 1]);
+        markerScript += 'var marker = L.marker([' + stations.rows[stations.rows.length - 1].latitude + ',' + stations.rows[stations.rows.length - 1].longitude + `]).addTo(map).bindPopup('<a href=\"/stations/` + stations.rows[stations.rows.length - 1].station_id + `\">` + stations.rows[stations.rows.length - 1].station + `</a>');`;
+
     }
 
     res.render("dashboard", {
-        latestreadings: req.session.readingArray
+        latestreadings: req.session.readingArray,
+        markerScript : markerScript
     });
 
 });
@@ -127,7 +130,7 @@ app.get("/stations/:id", async function (req, res) {
     /* List details about a station */
     var stationId = req.params.id;
     let readings_method = await dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id WHERE station_id=$1", [stationId]);
-
+    readings_method.rows[readings_method.rows.length -1].direction = getTextfromDegrees(readings_method.rows[readings_method.rows.length -1].direction);
 
     res.render("details", {
         latest_reading: readings_method.rows[readings_method.rows.length -1],
@@ -173,6 +176,88 @@ app.post("/stations/:id", urlencoded({ extended: false }), async function(req,re
 
 
     }
+
+    await updateReadings(stationId);
+
+    res.redirect("/stations/"+stationId);
+
+});
+
+
+app.get("/register", function (req, res) {
+
+    res.render("register");
+
+});
+
+
+app.post("/register", urlencoded({ extended: false }), async function(req,res){
+    var email = req.body.email;
+    var firstname = req.body.firstname;
+    var lastname = req.body.lastname;
+    var password = req.body.password;
+
+    //check database if the email address already exists
+    let checkExistingUser = await dbClient.query("SELECT * from users where email = $1", [email]);
+    if (checkExistingUser.rows.length == 0) {
+        dbClient.query("INSERT into users (email, firstname, lastname, password) VALUES ($1, $2, $3, $4)", [email, firstname, lastname, password]);
+        res.render("index");
+    }
+    else{
+        res.render("register",{register_error : true});
+    }
+});
+
+app.get("/logout", function(req, res) {
+    req.session.destroy(function (err) {
+        console.log("Session destroyed.");
+   });
+    res.render("index");
+});
+
+app.get("/stations/:id/addreport", async function(req, res){
+
+    var stationId = req.params.id;
+    let readings = await dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id WHERE station_id=$1", [stationId]);
+    let report = await addreport(readings.rows[0].latitude, readings.rows[0].longitude);
+
+
+    var currentdate = new Date().toString();
+    if (readings.rows.length == 1 && readings.rows[0].weather == null && readings.rows[0].temperature == null && readings.rows[0].wind == null && readings.rows[0].pressure == null) {
+        dbClient.query("UPDATE readings SET time = $1, weather = $2, temperature = $3, wind = $4, direction = $5, pressure = $6, user_id = $7 WHERE station_id = $8", [currentdate, report.code, report.temperature, report.windSpeed, report.windDirection, report.pressure, req.session.user_id, stationId]);
+    }
+    else {
+        dbClient.query("INSERT into readings (time, station_id, weather, temperature, wind, direction, pressure, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [currentdate, stationId, report.code, report.temperature, report.windSpeed, report.windDirection, report.pressure, req.session.user_id]);
+    }
+
+    await updateReadings(stationId);
+
+    res.redirect("/stations/"+stationId);
+});
+
+
+//Controller
+async function addreport(latitude, longitude){
+    const oneCallRequest = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&appid=ffb05f71a6c968a89b77bb6fc74a6bba`
+
+    console.log("rendering new report");
+    let report = {};
+    const result = await axios.get(oneCallRequest);
+    if (result.status == 200) {
+        const reading = result.data.current;
+        report.code = reading.weather[0].id;
+        report.temperature = reading.temp;
+        report.windSpeed = reading.wind_speed;
+        report.pressure = reading.pressure;
+        report.windDirection = reading.wind_deg;
+    }
+
+    return report;
+}
+
+
+async function updateReadings(stationId){
+
     //Maximum and Minimum of Temperature, Wind, Air Pressure
     let max_temp = await dbClient.query("SELECT MAX(temperature) FROM readings WHERE station_id=$1", [stationId]);
     let min_temp = await dbClient.query("SELECT MIN(temperature) FROM readings WHERE station_id=$1", [stationId]);
@@ -223,46 +308,46 @@ app.post("/stations/:id", urlencoded({ extended: false }), async function(req,re
             dbClient.query("UPDATE stations SET pressure_increase = false WHERE id = $1", [stationId]);
         }
     }
+}
 
+function getTextfromDegrees(direction){
 
-    res.redirect("/stations/"+stationId);
+    if(direction >= 0.0 && direction <= 360.0)
+        if(direction > 348.75 || direction <= 11.25)
+            return "Nord"
+        else if(direction > 11.25 && direction <= 33.75)
+            return "Nord Nord Ost"
+        else if(direction > 33.75 && direction <= 56.25)
+            return "Nord Ost"
+        else if(direction > 56.25 && direction <= 78.75)
+            return "Ost Nord Ost"
+        else if(direction > 78.75 && direction <= 101.25)
+            return "Ost"
+        else if(direction > 101.25 && direction <= 123.75)
+            return "Ost Süd Ost"
+        else if(direction > 123.75 && direction <= 146.25)
+            return "Süd Ost"
+        else if(direction > 146.25 && direction <= 168.75)
+            return "Süd Süd Ost"
+        else if(direction > 168.75 && direction <= 191.25)
+            return "Süd"
+        else if(direction > 191.25 && direction <= 213.75)
+            return "Süd Süd West"
+        else if(direction > 213.75 && direction <= 236.25)
+            return "Süd West"
+        else if(direction > 236.25 && direction <= 258.75)
+            return "West Süd West"
+        else if(direction > 258.75 && direction <= 281.25)
+            return "West"
+        else if(direction > 281.25 && direction <= 303.75)
+            return "West Nord West"
+        else if(direction > 303.75 && direction <= 326.25)
+            return "Nord West"
+        else if(direction > 326.25 && direction <= 348.75)
+            return "Nord Nord West"
 
-});
-
-app.get("/register", function (req, res) {
-
-    res.render("register");
-
-});
-
-
-app.post("/register", urlencoded({ extended: false }), async function(req,res){
-    var email = req.body.email;
-    var firstname = req.body.firstname;
-    var lastname = req.body.lastname;
-    var password = req.body.password;
-
-    //check database if the email address already exists
-    let checkExistingUser = await dbClient.query("SELECT * from users where email = $1", [email]);
-    if (checkExistingUser.rows.length == 0) {
-        dbClient.query("INSERT into users (email, firstname, lastname, password) VALUES ($1, $2, $3, $4)", [email, firstname, lastname, password]);
-        res.render("index");
-    }
-    else{
-        res.render("register",{register_error : true});
-    }
-});
-
-app.get("/logout", function(req, res) {
-    req.session.destroy(function (err) {
-        console.log("Session destroyed.");
-   });
-    res.render("index");
-});
+}
 
 app.listen(PORT, function() {
     console.log(`Weathertop running and listening on port ${PORT}`);
 });
-
-
-
