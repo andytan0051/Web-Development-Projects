@@ -131,23 +131,23 @@ block content
                         div(class='col')
                             div(class="form-group")
                                 label(for="weather_code") Code
-                                input(type="text", name="weather_code", id="weather_code")
+                                input(type="text", name="weather_code", id="weather_code", pattern="[0-9]+", title="Only positive whole numbers are allowed!")
                         div(class='col')
                             div(class="form-group")
                                 label(for="temperature") Temperatur
-                                input(type="text", name="temperature", id="temperature")
+                                input(type="text", name="temperature", id="temperature", step="any")
                         div(class='col')
                             div(class="form-group")
                                 label(for="wind_speed") Windgeschwindigkeit
-                                input(type="text", name="wind_speed", id="wind_speed")
+                                input(type="number", name="wind_speed", id="wind_speed", min="0", step="any")
                         div(class='col')
                             div(class="form-group")
                                 label(for="wind_direction") Windrichtung
-                                input(type="text", name="wind_direction", id="wind_direction")
+                                input(type="number", name="wind_direction", id="wind_direction", min="0", step="any")
                         div(class='col')
                             div(class="form-group")
                                 label(for="airpressure") Luftdruck
-                                input(type="text", name="airpressure", id="airpressure")
+                                input(type="text", name="airpressure", id="airpressure", pattern="[0-9]+", title="Only positive whole numbers are allowed!")
                     div(class="form-group")
                         button(class="btn btn-primary", type="submit") Messung hinzufügen
             a(href='/stations/'+latest_reading.station_id+'/addreport')
