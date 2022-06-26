@@ -131,10 +131,10 @@ app.get("/stations/:id", async function (req, res) {
     var stationId = req.params.id;
     let readings_method = await dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id WHERE station_id=$1", [stationId]);
     readings_method.rows[readings_method.rows.length -1].direction = getTextfromDegrees(readings_method.rows[readings_method.rows.length -1].direction);
-
+    let readingswithSortedId = await dbClient.query("SELECT * FROM readings WHERE station_id=$1 ORDER BY id", [stationId]);
     res.render("details", {
         latest_reading: readings_method.rows[readings_method.rows.length -1],
-        readings: readings_method.rows.reverse()
+        readings: readingswithSortedId.rows.reverse()
     });
 
 
@@ -275,7 +275,7 @@ async function updateReadings(stationId){
     dbClient.query("UPDATE stations SET min_pressure = $1 WHERE id = $2", [min_pressure.rows[0].min, stationId]);
 
     //Increasing or Decreasing Trend of Temperature, Wind, Air Pressure
-    let updatedreadings = await dbClient.query("SELECT * from readings where station_id = $1", [stationId]);
+    let updatedreadings = await dbClient.query("SELECT * from readings where station_id = $1 ORDER BY id", [stationId]);
     if(updatedreadings.rows.length > 1) {
         //Temperature
         if (updatedreadings.rows[updatedreadings.rows.length - 1].temperature > updatedreadings.rows[updatedreadings.rows.length - 2].temperature) {
