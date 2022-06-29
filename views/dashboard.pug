@@ -12,7 +12,7 @@ block content
         h1 Dashboard
         div
             each latestreading in latestreadings
-                div(class="container" id='dashboard_container')
+                div(class="container-fluid" id='dashboard_container')
                     div(class="row")
                         div(class="col") #{latestreading.station}
                             div(id="lat_lon")
@@ -116,7 +116,7 @@ block content
 
 
         form(action="/stations", method="post")
-            div(class='container')
+            div(class='container-fluid')
                 div(class='row')
                     div(class='col')
                         div(class="form-group")

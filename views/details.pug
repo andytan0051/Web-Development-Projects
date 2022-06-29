@@ -8,7 +8,7 @@ block content
                     h3 Weathertop
                 li
                     a(href='/stations') Dashboard
-        div(class="container")
+        div(class="container-fluid")
             div(class="row" id='latestreadingrow')
                 div(class="col") #{latest_reading.station}
                     div(id="lat_lon")
@@ -126,7 +126,7 @@ block content
                                             i.bi.bi-x-circle(style="color: black;")
 
             form(action="/stations/"+latest_reading.station_id, method="post")
-                div(class='container')
+                div(class='container-fluid')
                     div(class='row')
                         div(class='col')
                             div(class="form-group")
