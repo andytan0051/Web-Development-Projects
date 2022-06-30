@@ -217,22 +217,26 @@ app.get("/logout", function(req, res) {
 
 app.get("/stations/:id/addreport", async function(req, res){
 
-    var stationId = req.params.id;
-    let readings = await dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id WHERE station_id=$1", [stationId]);
-    let report = await addreport(readings.rows[0].latitude, readings.rows[0].longitude);
-
-
-    var currentdate = new Date().toString();
-    if (readings.rows.length == 1 && readings.rows[0].weather == null && readings.rows[0].temperature == null && readings.rows[0].wind == null && readings.rows[0].pressure == null) {
-        dbClient.query("UPDATE readings SET time = $1, weather = $2, temperature = $3, wind = $4, direction = $5, pressure = $6, user_id = $7 WHERE station_id = $8", [currentdate, report.code, report.temperature, report.windSpeed, report.windDirection, report.pressure, req.session.user_id, stationId]);
+    if(req.session.user_id == undefined){
+        res.render("index", {login_error: true});
     }
     else {
-        dbClient.query("INSERT into readings (time, station_id, weather, temperature, wind, direction, pressure, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [currentdate, stationId, report.code, report.temperature, report.windSpeed, report.windDirection, report.pressure, req.session.user_id]);
+        var stationId = req.params.id;
+        let readings = await dbClient.query("SELECT * FROM stations JOIN readings ON stations.id = readings.station_id WHERE station_id=$1", [stationId]);
+        let report = await addreport(readings.rows[0].latitude, readings.rows[0].longitude);
+
+
+        var currentdate = new Date().toString();
+        if (readings.rows.length == 1 && readings.rows[0].weather == null && readings.rows[0].temperature == null && readings.rows[0].wind == null && readings.rows[0].pressure == null) {
+            dbClient.query("UPDATE readings SET time = $1, weather = $2, temperature = $3, wind = $4, direction = $5, pressure = $6, user_id = $7 WHERE station_id = $8", [currentdate, report.code, report.temperature, report.windSpeed, report.windDirection, report.pressure, req.session.user_id, stationId]);
+        } else {
+            dbClient.query("INSERT into readings (time, station_id, weather, temperature, wind, direction, pressure, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [currentdate, stationId, report.code, report.temperature, report.windSpeed, report.windDirection, report.pressure, req.session.user_id]);
+        }
+
+        await updateReadings(stationId);
+
+        res.redirect("/stations/" + stationId);
     }
-
-    await updateReadings(stationId);
-
-    res.redirect("/stations/"+stationId);
 });
 
 
