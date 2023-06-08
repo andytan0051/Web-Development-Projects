@@ -3,25 +3,28 @@
 #### WeatherTop is my web application project, where users can
 * register an account and log in to create a private session 🔐
 
-![Screenshot 2023-05-31 163957](https://github.com/andytan0051/weathertop/assets/102530483/78462f3e-c33c-47c0-877c-e3f09f632948)
+![Screenshot 2023-05-31 163957](https://github.com/andytan0051/weathertop/assets/102530483/ce936805-cb99-48bd-be05-73d1241f6abb)
+
 
 * manage a list of weather measurements and stations (insert, delete, update) 📝
 
-![Screenshot 2023-05-31 165128](https://github.com/andytan0051/weathertop/assets/102530483/9cc3ea33-1b82-4ade-8fda-173b226a6547)
+![Screenshot 2023-05-31 165128](https://github.com/andytan0051/weathertop/assets/102530483/de764078-5c46-4443-a328-e37b25efdc48)
 
 
-![image](https://github.com/andytan0051/weathertop/assets/102530483/262607a6-9e93-4b81-a666-27e46786f2c6)
+![Screenshot 2023-05-31 165237](https://github.com/andytan0051/weathertop/assets/102530483/6f011935-2ad6-4b99-a551-b5a94ee85a1c)
 
 
 * automatically insert real time weather measurement at a specific earth coordinate 🌈  
 
-![image](https://github.com/andytan0051/weathertop/assets/102530483/551c1752-83d0-48cd-b8a4-cc2df8bead8c)
+![Screenshot 2023-05-31 165318](https://github.com/andytan0051/weathertop/assets/102530483/d6d7c7c0-9919-4a8c-bb0d-3292d68ddf30)
+
 
 
 * understand weather measurements through visualizations 📈
 * interact with earth map and the respective coordinates of their weather stations 🌍
 
-![Screenshot 2023-05-31 165350](https://github.com/andytan0051/weathertop/assets/102530483/86a0b4de-3d0d-469c-ab07-c5ec9543549f)
+
+![Screenshot 2023-05-31 165350](https://github.com/andytan0051/weathertop/assets/102530483/1cebb9d9-9157-4d77-9ce0-bc4c28922a75)
 
 
 
